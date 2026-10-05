@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kindle Deconstructed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* E-ink palette: warm paper, near-black ink, one teal accent (a nod to ITO's faint tint). */
+    :root {
+      --paper: #f4f1ea;
+      --paper-deep: #e9e4d8;
+      --ink: #1b1b1a;
+      --ink-soft: #55524c;
+      --rule: #d3cdbf;
+      --accent: #1f5f6b;
+      --accent-soft: #dce8e8;
+      --warn: #8a4b14;
+      --warn-soft: #f3e6d4;
+      --serif: "Literata", Georgia, serif;
+      --sans: "Inter", system-ui, sans-serif;
+      /* Rendered width of the 4:3 hero photo: limited by the hero's height (100vh minus padding, caption and scroll cue) or by the viewport width. */
+      --hero-chrome: 144px;
+      --col: min(calc((100vh - var(--hero-chrome)) * 4 / 3), calc(100% - 32px));
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 18px; line-height: 1.65; }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 16px; }
+    /* Same width rule as --col, but resolved against the hero's padded box so the caption matches the photo. */
+    .hero figure { width: min(calc((100vh - var(--hero-chrome)) * 4 / 3), 100%); margin: 0 0 40px; }
+    .hero img { display: block; width: 100%; height: auto; }
+    .scroll-cue { position: absolute; bottom: 20px; font-family: var(--sans); font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; }
+    .scroll-cue::after { content: ""; display: block; width: 1px; height: 22px; margin: 6px auto 0; background: var(--ink-soft); animation: drip 1.8s ease-in-out infinite; transform-origin: top; }
+    @keyframes drip { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+    @media (prefers-reduced-motion: reduce) { .scroll-cue::after { animation: none; } html { scroll-behavior: auto; } }
+
+    /* ---------- Layout ---------- */
+    /* Halfway between the original 728px text column and the hero photo's width, never wider than the photo. */
+    main { width: min(var(--col), calc((var(--col) + 728px) / 2)); margin: 0 auto; padding: 0 0 96px; }
+    section { padding-top: 72px; }
+
+    .kicker { font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+    h1, h2, h3 { line-height: 1.2; text-wrap: pretty; }
+    h1 { font-size: clamp(36px, 6vw, 56px); margin: 0 0 16px; }
+    h2 { font-size: clamp(28px, 4.5vw, 40px); margin: 0 0 20px; }
+    h3 { font-size: 22px; margin: 40px 0 8px; }
+    p { margin: 0 0 18px; }
+    .lede { font-size: 21px; color: var(--ink-soft); }
+    sub, sup { line-height: 0; }
+    a { color: var(--accent); }
+
+    hr.chapter { border: 0; text-align: center; margin: 72px 0 0; }
+    hr.chapter::before { content: "• • •"; letter-spacing: 1em; color: var(--rule); }
+
+    /* ---------- Figures ---------- */
+    figure { margin: 32px 0; }
+    figure img, figure svg { display: block; width: 100%; height: auto; border-radius: 4px; }
+    figure.framed img { background: #fff; padding: 12px; border: 1px solid var(--rule); }
+    figcaption { font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--ink-soft); margin-top: 10px; }
+    figcaption b { color: var(--ink); }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .pair figure { margin: 0; }
+    .pair-wrap { margin: 32px 0; }
+    .narrow { max-width: 560px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 640px) { .pair { grid-template-columns: 1fr; } }
+
+    /* ---------- Tables ---------- */
+    .table-wrap { overflow-x: auto; margin: 28px 0; }
+    table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 15px; font-variant-numeric: tabular-nums; }
+    th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--rule); }
+    th { font-weight: 600; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 2px solid var(--ink); }
+    td.num, th.num { text-align: right; }
+    caption { caption-side: bottom; text-align: left; font-size: 14px; color: var(--ink-soft); padding-top: 10px; }
+    caption b { color: var(--ink); }
+
+    /* ---------- Callouts ---------- */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 28px 0; }
+    .stats.four { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 640px) { .stats.four { grid-template-columns: 1fr 1fr; } }
+    .stat { background: var(--paper-deep); border-radius: 6px; padding: 16px; }
+    .stat .v { font-size: 30px; font-weight: 700; line-height: 1.1; }
+    .stat .l { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); margin-top: 6px; line-height: 1.4; }
+
+    .calc { background: #fff; border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 4px; padding: 20px 22px; margin: 28px 0; font-family: var(--sans); font-size: 15px; }
+    .calc h4 { margin: 0 0 12px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .calc .eq { font-family: var(--serif); font-size: 18px; margin: 6px 0; overflow-x: auto; overflow-y: hidden; padding: 2px 0; white-space: nowrap; }
+    .calc .result { font-weight: 600; margin-top: 12px; }
+    .calc var { font-style: italic; }
+
+    .note { background: var(--accent-soft); border-radius: 6px; padding: 16px 20px; margin: 28px 0; font-size: 16px; }
+    .note.warn { background: var(--warn-soft); }
+    .note strong { font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--accent); }
+    .note.warn strong { color: var(--warn); }
+    .note p:last-child { margin: 0; }
+
+    ol.steps { padding-left: 22px; }
+    ol.steps li { margin-bottom: 10px; }
+
+    .takeaway { font-size: 24px; line-height: 1.45; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 24px 0; margin: 40px 0; }
+
+    /* ---------- Sources & footer ---------- */
+    .sources { font-family: var(--sans); font-size: 14px; color: var(--ink-soft); }
+    .sources li { margin-bottom: 8px; overflow-wrap: anywhere; }
+    footer { border-top: 1px solid var(--rule); padding: 32px 16px 48px; text-align: center; font-family: var(--sans); font-size: 14px; color: var(--ink-soft); }
+    footer a { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <section class="hero" style="padding-top:16px">
+    <figure>
+      <img src="Pictures/Kindle_Deconstructed.jpg" alt="A Kindle Paperwhite taken apart, with its components laid out on a workbench">
+      <figcaption><b>Figure 1.</b> The Kindle's components. Clockwise from top left: battery and battery cover, screws, main board, display module, ITO film, back case, frame.</figcaption>
+    </figure>
+    <a class="scroll-cue" href="#intro">Scroll</a>
+  </section>
+
+  <main>
+    <!-- ======================= INTRO ======================= -->
+    <section id="intro">
+      <p class="kicker">MM&amp;E E-waste Project · Fall 2026</p>
+      <h1>What are our Kindles made of?</h1>
+      <p class="lede">A few of our group members had kindles as kids, and Dakota still uses one to this day. As younger aspiring engineers, we were curious about what is actually inside of the kindles we were using. Over the course of this project, we satisfied our childish dream of taking apart a Kindle and seeing for ourselves the materials inside of it.</p>
+      <p>We looked closely at two parts of the Kindle. The first is the transparent electrode that makes the e-ink screen work (figure 1 botom right). The second is the thin stainless-steel cover that sits between the reader and a lithium-ion battery(figure 1 top left). We performed a variety of tests on the chosen products, along with researching the feasibility of recycling each of them.</p>
+    </section>
+
+    <!-- ======================= 01 KINDLE 101 ======================= -->
+    <section id="kindle-101">
+      <p class="kicker">01 · Kindle 101</p>
+      <h2>Ink you can switch on and off</h2>
+      <p>A Kindle's screen doesn't glow like a phone's. It uses an <em>electrophoretic</em> (e-ink) display. Millions of microcapsules sit between two electrodes, and each capsule holds positively and negatively charged black and white pigment particles in a clear fluid. When a voltage is applied across a capsule, one colour of particle is pulled toward the top of the capsule, so that spot shows black or white.</p>
+      <p>Power is only needed to <em>switch</em> a capsule. Once the particles have moved they stay put with no power at all, which is why a page of text costs almost nothing to display and a Kindle battery lasts for weeks.</p>
+      <div class="pair-wrap"><div class="pair">
+        <figure class="framed">
+          <img src="Pictures/screen/eink-diagram.png" alt="Diagram of three e-ink capsules between a transparent top electrode and a bottom electrode; the black and white particles move depending on electrode polarity" loading="lazy">
+          <figcaption><b>Figure 2.</b> How a capsule switches: the polarity of the bottom electrode decides whether black or white pigment rises to the transparent top electrode. Adapted from [1].</figcaption>
+        </figure>
+        <figure>
+          <img src="Pictures/screen/eink-capsules-microscope.jpg" alt="Microscope image of e-ink capsules next to a ruler with 0.1 mm divisions" loading="lazy">
+          <figcaption><b>Figure 3.</b> Our microscope image of the capsule layer next to a scale. Each division is 0.1&nbsp;mm, so each capsule is only a few hundredths of a millimetre across.</figcaption>
+        </figure>
+      </div></div>
+    </section>
+
+    <hr class="chapter">
+
+    <!-- ======================= 02 SCREEN / ITO ======================= -->
+    <section id="screen">
+      <p class="kicker">02 · The screen</p>
+      <h2>A conductor you can see through</h2>
+      <p>For the circuit in Figure 2 to work, the <em>top</em> electrode has to conduct electricity while letting you see the ink underneath. The Kindle does this with a thin plastic film coated in <strong>indium tin oxide (ITO)</strong>. The coating is invisible, but it adds a conductive layer that closes the circuit across every capsule.</p>
+      <figure class="narrow">
+        <img src="Pictures/screen/ito-film.jpg" alt="Translucent ITO-coated film peeled from the Kindle display" loading="lazy">
+        <figcaption><b>Figure 4.</b> The ITO-coated top electrode film, removed from our Kindle.</figcaption>
+      </figure>
+
+      <h3>Is there really indium in it? (XRF)</h3>
+      <p>The usual ITO recipe is about 90% indium oxide and 10% tin oxide by weight, which works out to roughly 74% indium, 8% tin and 18% oxygen. We scanned the coated film twice with the X-ray fluorescence (XRF) analyser, expecting indium to stand out.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Element</th><th class="num">Scan 1 (%)</th><th class="num">Scan 2 (%)</th></tr></thead>
+          <tbody>
+            <tr><td>Si (silicon)</td><td class="num">9.1</td><td class="num">65.4</td></tr>
+            <tr><td>Sc (reported); likely Ca</td><td class="num">51.4</td><td class="num">13.0</td></tr>
+            <tr><td>P (phosphorus)</td><td class="num">21.2</td><td class="num">6.0</td></tr>
+            <tr><td>S (sulfur)</td><td class="num">4.6</td><td class="num">11.8</td></tr>
+            <tr><td>Al (aluminium)</td><td class="num">13.4</td><td class="num">3.5</td></tr>
+            <tr><td>Mn (manganese)</td><td class="num">0.2</td><td class="num">0.3</td></tr>
+            <tr><td>In (indium)</td><td class="num">—</td><td class="num">—</td></tr>
+          </tbody>
+          <caption><b>Table 1.</b> XRF results from two scans of the ITO-coated film, normalised to 100%. Oxygen can't be detected by XRF, and indium did not appear in either scan.</caption>
+        </table>
+      </div>
+      <p>No indium appeared. The two scans also disagree with each other, and they look much more like the material <em>underneath</em> the coating than the coating itself. The XRF signal goes far deeper than a coating only nanometres thick, so it mostly measures the substrate. The "scandium" is almost certainly calcium, a known mix-up in our XRF software because the two elements' X-ray peaks overlap. As a check, we scanned a piece of confirmed ITO glass from the materials science lab, and it didn't show indium either. Our conclusion is that this instrument can't detect a coating this thin. It doesn't mean the indium is missing.</p>
+
+      <h3>Is it conductive? (four-point probe)</h3>
+      <p>To check that the coating conducts, we placed the film on a four-point probe connected to a power supply. Current flowed through the film, which confirms there is a conductive layer on the plastic even though we can't see it.</p>
+      <figure>
+        <img src="Pictures/screen/four-point-probe.jpg" alt="Four probe needles resting on the clear film, connected to a power supply by red leads" loading="lazy">
+        <figcaption><b>Figure 5.</b> Testing the conductivity of the top film with the four-point probe.</figcaption>
+      </figure>
+
+      <h3>Structure and bonding: why ITO?</h3>
+      <p>ITO is a <strong>ceramic</strong>, not a metal. Its base is indium oxide (In<sub>2</sub>O<sub>3</sub>), an ionic–covalent compound with a cubic crystal structure called <em>bixbyite</em>. Its usefulness comes from two properties that normally don't go together:</p>
+      <ul>
+        <li><strong>Transparency.</strong> In<sub>2</sub>O<sub>3</sub> has a wide optical band gap of about 3.5&nbsp;eV. That is the minimum photon energy needed to push an electron across the gap and absorb the light. Visible-light photons carry only about 1.6–3.1&nbsp;eV, so they pass straight through.</li>
+        <li><strong>Conductivity.</strong> In ITO, some In<sup>3+</sup> ions in the crystal are replaced by Sn<sup>4+</sup> ions. Each tin ion brings one extra electron that the lattice doesn't need for bonding, and that free electron can carry current. The indium-to-tin ratio is tuned to give enough free electrons to conduct without making the film cloudy.</li>
+      </ul>
+
+      <div class="pair-wrap"><div class="pair" style="align-items:center">
+        <figure>
+          <svg viewBox="0 0 300 280" role="img" aria-labelledby="uc-title">
+            <title id="uc-title">Body-centred tetragonal unit cell of indium: atoms on the eight corners and one in the centre, with the vertical c axis about 1.5 times longer than a</title>
+            <g fill="none" stroke="#1b1b1a" stroke-width="1.5">
+              <path d="M110 200 L210 200 M110 200 L60 230 M110 200 L110 48" stroke-dasharray="4 4" stroke="#8a857b"/>
+              <path d="M60 230 L160 230 L210 200 L210 48 L110 48 L60 78 Z M60 78 L160 78 L210 48 M160 78 L160 230"/>
+            </g>
+            <g fill="#8a857b" stroke="#1b1b1a" stroke-width="1">
+              <circle cx="110" cy="200" r="12"/><circle cx="210" cy="200" r="12"/><circle cx="110" cy="48" r="12"/><circle cx="210" cy="48" r="12"/>
+            </g>
+            <circle cx="135" cy="139" r="13" fill="#1f5f6b" stroke="#1b1b1a"/>
+            <g fill="#c9c4b8" stroke="#1b1b1a" stroke-width="1">
+              <circle cx="60" cy="230" r="12"/><circle cx="160" cy="230" r="12"/><circle cx="60" cy="78" r="12"/><circle cx="160" cy="78" r="12"/>
+            </g>
+            <g font-family="Inter, sans-serif" font-size="13" fill="#55524c">
+              <text x="104" y="262">a = 3.25 Å</text>
+              <text x="222" y="128">c = 4.95 Å</text>
+            </g>
+          </svg>
+          <figcaption><b>Figure 6.</b> Indium metal's body-centred tetragonal unit cell: one atom at each corner and one in the centre (teal). The cell is stretched along <i>c</i>, with <i>c/a</i> ≈ 1.52.</figcaption>
+        </figure>
+        <div>
+          <p>The element indium has its own story. As a pure metal it forms a <em>body-centred tetragonal</em> crystal held together by fairly weak metallic bonds, with a cohesive energy of about 2.52&nbsp;eV/atom compared with 3.49&nbsp;eV/atom for copper. Weak bonds explain why indium is so soft and melts so easily.</p>
+          <div class="stats" style="grid-template-columns:1fr 1fr">
+            <div class="stat"><div class="v">156.6 °C</div><div class="l">Melting point of indium</div></div>
+            <div class="stat"><div class="v">~11 GPa</div><div class="l">Young's modulus (copper ≈ 120 GPa)</div></div>
+          </div>
+        </div>
+      </div></div>
+      <p>Once indium is locked into the oxide ceramic, those metallic properties disappear. It is the oxide's wide band gap and tin's extra electrons that make the screen work.</p>
+    </section>
+
+    <hr class="chapter">
+
+    <!-- ======================= 03 BATTERY COVER ======================= -->
+    <section id="battery-cover">
+      <p class="kicker">03 · The battery cover</p>
+      <h2>A quarter-millimetre of stainless steel</h2>
+      <p>Behind the screen, a thin metal plate holds the lithium-ion battery in place. It has two jobs: shield the battery from impacts, and keep a swelling battery from pushing into the rest of the device or into the user's hand.</p>
+      <div class="pair-wrap"><div class="pair">
+        <figure>
+          <img src="Pictures/battery/cover-front.jpg" alt="Bare metal side of the battery cover with adhesive residue in the centre and screw tabs on two corners" loading="lazy">
+        </figure>
+        <figure>
+          <img src="Pictures/battery/cover-back.jpg" alt="Back of the battery cover with a black rubber-like pad bonded across most of its face" loading="lazy">
+        </figure>
+      </div>
+      <figcaption><b>Figure 7.</b> Front and back of the stainless-steel battery cover. The back carries a thin, soft black pad bonded on with adhesive.</figcaption></div>
+      <div class="stats four">
+        <div class="stat"><div class="v">70 × 60 mm</div><div class="l">Footprint (70.26 × 60.10 mm)</div></div>
+        <div class="stat"><div class="v">0.25 mm</div><div class="l">Sheet thickness</div></div>
+        <div class="stat"><div class="v">2.44 mm</div><div class="l">Height of the bent edge walls</div></div>
+        <div class="stat"><div class="v">2 screws</div><div class="l">Through tabs on opposite corners (2.16 mm holes)</div></div>
+      </div>
+
+      <h3>Identifying the alloy</h3>
+      <p>We clipped a tab off the cover and scanned it with XRF. It is mostly iron, with large amounts of chromium and nickel and a little manganese, which is the signature of an austenitic stainless steel. Comparing our numbers with the alloy data in Ansys Granta EduPack, the closest match is <strong>301 stainless steel</strong>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Element</th><th class="num">Measured (wt.%)</th><th class="num">301 SS spec (wt.%)</th></tr></thead>
+          <tbody>
+            <tr><td>Fe (iron)</td><td class="num">74.4</td><td class="num">70.8–78 (balance)</td></tr>
+            <tr><td>Cr (chromium)</td><td class="num">16.8</td><td class="num">16–18</td></tr>
+            <tr><td>Ni (nickel)</td><td class="num">6.2</td><td class="num">6–8</td></tr>
+            <tr><td>Mn (manganese)</td><td class="num">1.7</td><td class="num">0–2</td></tr>
+            <tr><td>C (carbon)</td><td class="num">not detectable by XRF</td><td class="num">0–0.15</td></tr>
+          </tbody>
+          <caption><b>Table 2.</b> XRF composition of the battery cover compared with the composition range for 301 stainless steel (Ansys Granta EduPack). Every measured element falls within the spec.</caption>
+        </table>
+      </div>
+      <p>The chromium is what makes it <em>stainless</em>. It forms a thin, self-healing chromium oxide film on the surface, which gives 301 excellent resistance to water and humidity and moderate resistance to acids and alkalis. That matters for a part sitting on a battery inside a device people carry everywhere.</p>
+
+      <h3>Mechanical properties</h3>
+      <div class="pair-wrap"><div class="pair" style="align-items:center">
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Property</th><th class="num">Value</th></tr></thead>
+            <tbody>
+              <tr><td>Hardness (measured)</td><td class="num">308 HV</td></tr>
+              <tr><td>Young's modulus</td><td class="num">189 GPa</td></tr>
+              <tr><td>Yield strength</td><td class="num">758 MPa</td></tr>
+              <tr><td>Flexural strength</td><td class="num">696 MPa</td></tr>
+              <tr><td>Elongation at fracture</td><td class="num">16.5%</td></tr>
+            </tbody>
+            <caption><b>Table 3.</b> We measured hardness with a micro-hardness test. The other values are mid-range figures for 301 SS from Granta EduPack.</caption>
+          </table>
+        </div>
+        <figure style="margin:0">
+          <img src="Pictures/battery/hardness-indent.jpg" alt="Microscope view through the eyepiece of a diamond-shaped Vickers indent between two measurement lines" loading="lazy">
+          <figcaption><b>Figure 8.</b> Our Vickers indent in the cover: 500&nbsp;gf load, with the measurement lines 51.6&nbsp;µm apart.</figcaption>
+        </figure>
+      </div></div>
+      <p>A hardness of 308&nbsp;HV is high for an austenitic stainless steel. That suggests the sheet was <em>cold-worked</em> (rolled or formed at room temperature), which 301 is designed for. As Figure 9 shows, 301 has a large strain-hardening region: every bit of plastic deformation makes it stronger. That lets manufacturers roll very thin sheet that is still stiff and strong.</p>
+      <figure class="framed narrow">
+        <img src="Pictures/battery/stress-strain-301.png" alt="Schematic stress-strain curve rising from a yield strength of 758.4 MPa through a long strain-hardening region to an ultimate strength of 1023.9 MPa, then fracturing at 16.5% strain" loading="lazy">
+        <figcaption><b>Figure 9.</b> Schematic tensile stress–strain curve for 301 stainless steel: Young's modulus 189&nbsp;GPa, yield 758&nbsp;MPa, ultimate strength about 1024&nbsp;MPa, fracture at 16.5% strain. The elastic region is exaggerated so it's visible. Yielding is a smooth transition rather than a sharp drop.</figcaption>
+      </figure>
+    </section>
+
+    <hr class="chapter">
+
+    <!-- ======================= 04 USE PHASE ======================= -->
+    <section id="use-phase">
+      <p class="kicker">04 · Use phase</p>
+      <h2>What happens when the battery swells?</h2>
+      <p>In normal use the battery barely pushes on its cover. The worst case is an ageing or damaged lithium-ion cell that <em>swells</em> as gas builds up inside, pressing outward on the middle of the cover while the screws and edges hold it in place.</p>
+      <figure>
+        <img src="Pictures/battery/loading-diagram.png" alt="Left: top view of the battery cover with section line A-A. Right: cross-section showing a swollen battery pushing the cover upward between its edge restraints" loading="lazy">
+        <figcaption><b>Figure 10.</b> Our loading model. (a) Top view of the cover. (b) Cross-section A–A: a swollen battery pushes the cover outward between its edge restraints (deflection exaggerated).</figcaption>
+      </figure>
+      <p>How hard does a swelling battery push? One study measured the force from swelling lithium-ion cells and found the force rising by roughly 50&nbsp;N or more above its starting preload, whether that preload was 50&nbsp;N or 250&nbsp;N (Figure 11). We used <strong>50&nbsp;N</strong> as a reasonable estimate of what our cover has to resist.</p>
+      <figure class="framed">
+        <img src="Pictures/battery/swelling-force.png" alt="Two plots of force against time for swelling lithium-ion cells under 50 N and 250 N preloads, with force rising steadily over time" loading="lazy">
+        <figcaption><b>Figure 11.</b> Force over time from swelling lithium-ion cells at two preloads [2].</figcaption>
+      </figure>
+
+      <h3>Testing it: three-point bending</h3>
+      <p>We modelled this load as <strong>flexure</strong>. The cover is supported near its two ends and pushed at the centre, so its outer face stretches (tension) while its inner face squeezes (compression). We reproduced this on an Instron universal testing machine as a three-point bend test.</p>
+      <div class="pair-wrap"><div class="pair">
+        <figure>
+          <img src="Pictures/battery/instron-setup.jpg" alt="Instron testing machine with a 500 N load cell and a three-point bending fixture" loading="lazy">
+          <figcaption><b>Figure 12.</b> Three-point flexure setup on the Instron.</figcaption>
+        </figure>
+        <figure class="framed">
+          <img src="Pictures/battery/bending-stress.png" alt="Diagram of a bent beam with tension on the outer face, compression on the inner face, and a linear stress distribution through the thickness that is zero at the neutral surface" loading="lazy">
+          <figcaption><b>Figure 13.</b> In bending, stress varies linearly through the thickness. It is largest at the surfaces and zero at the neutral axis.</figcaption>
+        </figure>
+      </div></div>
+      <figure class="framed narrow">
+        <img src="Pictures/battery/load-extension.png" alt="Load against extension from the Instron test; load reaches about 185 N near 9 mm of extension and then falls off to about 75 N at 18 mm" loading="lazy">
+        <figcaption><b>Figure 14.</b> Instron load–extension data for the battery cover. Values are negative because the crosshead moves downward. The cover reached 50&nbsp;N after about 2.6&nbsp;mm, peaked near 185&nbsp;N at about 9&nbsp;mm, and then gave way.</figcaption>
+      </figure>
+
+      <div class="calc">
+        <h4>Maximum bending stress at 50 N (flat-sheet model)</h4>
+        <div class="eq"><var>M</var> = <var>WL</var>/4 = (50 N)(0.070 m)/4 = <b>0.875 N·m</b></div>
+        <div class="eq"><var>I</var> = <var>wh</var><sup>3</sup>/12 = (0.060 m)(0.00025 m)<sup>3</sup>/12 = <b>7.81 × 10<sup>−14</sup> m<sup>4</sup></b></div>
+        <div class="eq"><var>c</var> = <var>h</var>/2 = <b>1.25 × 10<sup>−4</sup> m</b></div>
+        <div class="eq">σ<sub>max</sub> = <var>Mc</var>/<var>I</var> = (0.875)(1.25 × 10<sup>−4</sup>)/(7.81 × 10<sup>−14</sup>) ≈ <b>1.4 × 10<sup>9</sup> Pa</b></div>
+        <p class="result">σ<sub>max</sub> ≈ 1.4 GPa, nearly twice the 758 MPa yield strength.</p>
+      </div>
+      <p>If the cover were a <em>flat</em> 0.25&nbsp;mm sheet, a swelling battery would bend it permanently. By the same equation, a flat sheet would start to yield at only about 27&nbsp;N.</p>
+      <p>Our real cover held about <strong>185&nbsp;N</strong> in the Instron before it gave way, roughly seven times more. The difference is the <strong>2.44&nbsp;mm bent walls</strong> around its edges. Like the flanges on an I-beam, they move material away from the neutral axis, which raises the moment of inertia far more than adding thickness would. The designers got a stiff, protective cover out of very little steel by bending its edges up.</p>
+    </section>
+
+    <hr class="chapter">
+
+    <!-- ======================= 05 END OF LIFE ======================= -->
+    <section id="end-of-life">
+      <p class="kicker">05 · End of life</p>
+      <h2>How hard is it to take back apart?</h2>
+      <p>Before the cover can be recycled as clean stainless steel, everything stuck to it has to come off. Here is how our teardown went:</p>
+      <ol class="steps">
+        <li>Pry off the Kindle's outer plastic case.</li>
+        <li>Remove the two screws holding the battery cover to the chassis.</li>
+        <li>Separate the lithium-ion battery from the cover, which it is bonded to with adhesive.</li>
+        <li>Peel the black foam pad off the cover. Underneath is a thin plastic film, which also peels off by hand.</li>
+        <li>Wipe off the leftover adhesive with ethanol.</li>
+      </ol>
+      <div class="pair-wrap"><div class="pair" style="align-items:center">
+        <figure class="framed">
+          <img src="Pictures/battery/peel-diagram.png" alt="Sketch of a hand peeling the black foam layer back from the silver stainless-steel cover" loading="lazy">
+          <figcaption><b>Figure 15.</b> Peeling the foam (black) from the stainless-steel cover (silver). The loading is a mix of tension and twisting.</figcaption>
+        </figure>
+        <figure>
+          <img src="Pictures/battery/cover-peeled.jpg" alt="The black foam pad, the clear plastic film and the bare steel cover laid out separately" loading="lazy">
+          <figcaption><b>Figure 16.</b> Separated: foam pad, plastic film and bare steel cover.</figcaption>
+        </figure>
+      </div></div>
+      <p>Peeling foam tape takes up to about <strong>35&nbsp;N</strong> [3], easily done by hand. The real stress state is complicated, with tension in the adhesive and some twisting. To estimate the stress in the steel, we assumed the peel force pulls along the face of the cover, which loads its cross-section in simple tension:</p>
+      <div class="calc">
+        <h4>Stress in the cover during peeling</h4>
+        <div class="eq"><var>A</var> = <var>w</var> × <var>t</var> = 60.10 mm × 0.25 mm = <b>15.0 mm²</b></div>
+        <div class="eq">σ = <var>F</var>/<var>A</var> = 35 N / 15.0 mm² ≈ <b>2.3 MPa</b></div>
+        <div class="eq">ε = σ/<var>E</var> = 2.3 MPa / 189 GPa ≈ <b>1.2 × 10<sup>−5</sup></b> (about 0.001%)</div>
+        <p class="result">About 0.3% of the yield strength: purely elastic, and the steel springs back unharmed.</p>
+      </div>
+      <p>Taking the cover apart barely loads the steel at all. And since the steel is going to be melted down, a little bending wouldn't matter anyway.</p>
+
+      <div class="note">
+        <strong>Our verdict on this part</strong>
+        <p>The battery cover is <em>easy to recycle</em>: two screws and a peel. It would be even easier without the adhesive. The bent walls and screws already hold the battery in place, so the glue mostly adds a cleaning step (and a solvent) between the device and a clean stream of stainless steel.</p>
+      </div>
+    </section>
+
+    <hr class="chapter">
+
+    <!-- ======================= 06 BIGGER PICTURE ======================= -->
+    <section id="bigger-picture">
+      <p class="kicker">06 · The bigger picture</p>
+      <h2>One Kindle, one small slice of a big pile</h2>
+      <div class="stats">
+        <div class="stat"><div class="v">62 Mt</div><div class="l">E-waste generated worldwide in 2022 [4]</div></div>
+        <div class="stat"><div class="v">22.3%</div><div class="l">of it documented as properly collected and recycled [4]</div></div>
+        <div class="stat"><div class="v">82 Mt</div><div class="l">Projected annual e-waste by 2030 [4]</div></div>
+      </div>
+      <p>A single Kindle is a tiny fraction of that, but there are many millions of them in drawers and landfills. Our two parts show both sides of the recycling story.</p>
+      <p><strong>The battery cover is the good news.</strong> Stainless steel is valuable, easy to identify and widely recycled, and this cover comes out with a screwdriver. The bigger risk in the same compartment is the lithium-ion battery. A damaged or swollen cell is exactly the failure we modelled in Section 04, and crushed batteries are a known cause of fires in waste and recycling facilities [9].</p>
+      <p><strong>The screen is the harder case.</strong> The indium in the ITO film is spread in a layer so thin our XRF couldn't find it. Indium is on the U.S. critical minerals list [5]. It is mined almost entirely as a by-product of zinc refining, and most of the world's refined supply comes from China [5]. A thin film bonded to plastic is about the hardest form to recover a metal from, so most of the indium in a discarded e-reader is simply lost.</p>
+      <p class="takeaway">The Kindle's most recyclable part is a plain sheet of steel. Its scarcest material is spread nanometres thin across the screen, which is the part that makes it a Kindle at all.</p>
+    </section>
+
+    <!-- ======================= SOURCES ======================= -->
+    <section id="sources">
+      <p class="kicker">Sources</p>
+      <ol class="sources">
+        <li>Cross-sectional diagram of e-ink microcapsules, ResearchGate. <a href="https://www.researchgate.net/figure/left-A-cross-sectional-diagram-of-E-ink-microcapsules-An-E-ink-displays-works-by_fig1_360331596">researchgate.net</a></li>
+        <li>Force evolution of swelling lithium-ion batteries, <i>ScienceDirect</i>. <a href="https://www.sciencedirect.com/science/article/pii/S2773153725001343">sciencedirect.com/science/article/pii/S2773153725001343</a></li>
+        <li>Peel force of adhesive foam tape, Force Channel. <a href="https://force-channel.com/en/post_2696/">force-channel.com</a></li>
+        <li>Baldé, C. P. et al. <i>The Global E-waste Monitor 2024</i>. ITU &amp; UNITAR. <a href="https://ewastemonitor.info/">ewastemonitor.info</a></li>
+        <li>U.S. Geological Survey. <i>Mineral Commodity Summaries: Indium</i>, and the 2022 U.S. List of Critical Minerals. <a href="https://www.usgs.gov/centers/national-minerals-information-center/indium-statistics-and-information">usgs.gov</a></li>
+        <li>Ansys Granta EduPack, record for AISI 301 stainless steel (composition and mechanical properties).</li>
+        <li>Flexure formula, Engineering Core Courses. <a href="http://www.engineeringcorecourses.com/solidmechanics1/C4-bending/C4.2-flexure-formula/theory/">engineeringcorecourses.com</a></li>
+        <li>Indium tin oxide, Wikipedia. <a href="https://en.wikipedia.org/wiki/Indium_tin_oxide">en.wikipedia.org/wiki/Indium_tin_oxide</a></li>
+        <li>U.S. EPA (2021). <i>An Analysis of Lithium-ion Battery Fires in Waste Management and Recycling</i>. <a href="https://www.epa.gov/recycle/used-lithium-ion-batteries">epa.gov</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p>David Barsoum · Anna Brown · Dakota Chang · Vishnu Eskew<br>Metals, Mining &amp; the Environment · Olin College · Fall 2026</p>
+    <p><a href="index.html">← Back to the Kindle</a></p>
+  </footer>
+</body>
+</html>

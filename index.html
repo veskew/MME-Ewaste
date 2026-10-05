@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MM&amp;E E-waste Project</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; background: #f4f4f4; font-family: system-ui, sans-serif; }
+    body { display: flex; flex-direction: column; }
+    header { text-align: center; padding: 32px 16px 0; color: #111; }
+    header h1 { margin: 0; font-size: clamp(32px, 6vw, 64px); font-weight: 700; letter-spacing: -0.01em; }
+    header p { margin: 8px 0 0; font-size: clamp(14px, 2vw, 20px); color: #555; }
+    model-viewer { flex: 1; width: 100%; min-height: 0; }
+
+    .actions { display: flex; justify-content: center; padding: 16px 16px 48px; }
+
+    /* The link is the real control; the shards are just its visible face, cut into pieces. */
+    .shatter {
+      --w: 220px;
+      --h: 60px;
+      position: relative;
+      display: block;
+      width: var(--w);
+      height: var(--h);
+      text-decoration: none;
+      outline: none;
+    }
+    .shard {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #111;
+      color: #f4f4f4;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      transition: transform 260ms cubic-bezier(.2, .9, .3, 1.3);
+    }
+    /* An uncut copy sits on top at rest so antialiased seams between shards don't show. */
+    .shard.whole { z-index: 1; transition: none; }
+    .shatter:hover .whole, .shatter:focus-visible .whole { visibility: hidden; }
+    .shatter:hover .shard,
+    .shatter:focus-visible .shard {
+      transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+    }
+    .shatter:focus-visible { box-shadow: 0 0 0 3px #f4f4f4, 0 0 0 5px #111; border-radius: 6px; }
+    .shatter:active .shard { transform: translate(calc(var(--dx) * 2), calc(var(--dy) * 2)) rotate(calc(var(--rot) * 2)); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .shard { transition: none; }
+      .shatter:hover .shard, .shatter:focus-visible .shard, .shatter:active .shard {
+        transform: translate(calc(var(--dx) * 0.4), calc(var(--dy) * 0.4));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MM&amp;E E-waste Project</h1>
+    <p>David Barsoum, Anna Brown, Dakota Chang, Vishnu Eskew</p>
+  </header>
+
+  <model-viewer
+    src="3dModels/amazon_kindle_paperwhite.glb"
+    alt="3D model of an Amazon Kindle Paperwhite"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1">
+  </model-viewer>
+
+  <div class="actions">
+    <a class="shatter" href="project.html" aria-label="Deconstruct" data-label="Deconstruct"></a>
+  </div>
+
+  <script>
+    // Cut the button face into triangles on a jittered grid. Each shard keeps the
+    // full button (text included) and is clipped to its triangle, so at rest the
+    // pieces line up seamlessly; on hover each drifts away from the center.
+    const btn = document.querySelector('.shatter');
+    const cols = 5, rows = 2, jitter = 0.35;
+
+    const pts = [];
+    for (let r = 0; r <= rows; r++) {
+      pts.push([]);
+      for (let c = 0; c <= cols; c++) {
+        const edgeX = c === 0 || c === cols, edgeY = r === 0 || r === rows;
+        const jx = edgeX ? 0 : (Math.random() - 0.5) * jitter;
+        const jy = edgeY ? 0 : (Math.random() - 0.5) * jitter;
+        pts[r].push([((c + jx) / cols) * 100, ((r + jy) / rows) * 100]);
+      }
+    }
+
+    const addShard = (poly) => {
+      const cx = poly.reduce((s, p) => s + p[0], 0) / poly.length - 50;
+      const cy = poly.reduce((s, p) => s + p[1], 0) / poly.length - 50;
+      const el = document.createElement('span');
+      el.className = 'shard';
+      el.setAttribute('aria-hidden', 'true');
+      el.textContent = btn.dataset.label;
+      el.style.clipPath = `polygon(${poly.map(p => `${p[0]}% ${p[1]}%`).join(',')})`;
+      el.style.setProperty('--dx', `${cx * 0.12 + (Math.random() - 0.5) * 3}px`);
+      el.style.setProperty('--dy', `${cy * 0.14 + (Math.random() - 0.5) * 3}px`);
+      el.style.setProperty('--rot', `${(Math.random() - 0.5) * 12}deg`);
+      btn.appendChild(el);
+    };
+
+    const whole = document.createElement('span');
+    whole.className = 'shard whole';
+    whole.setAttribute('aria-hidden', 'true');
+    whole.textContent = btn.dataset.label;
+    btn.appendChild(whole);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const a = pts[r][c], b = pts[r][c + 1], d = pts[r + 1][c], e = pts[r + 1][c + 1];
+        // Alternate the diagonal so the cracks don't all run the same way.
+        if ((r + c) % 2) { addShard([a, b, e]); addShard([a, e, d]); }
+        else { addShard([a, b, d]); addShard([b, e, d]); }
+      }
+    }
+  </script>
+</body>
+</html>
