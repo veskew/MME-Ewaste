@@ -19,8 +19,8 @@
 
   <main>
     <section id="bigger-picture">
-      <p class="kicker">The bigger picture</p>
-      <h2>One Kindle, one small slice of a big pile</h2>
+      <p class="kicker">Environmental impact</p>
+      <h2>Material recovery and design for disassembly</h2>
       <figure>
         <img src="Pictures/Kindle_Deconstructed.jpg" alt="A Kindle Paperwhite taken apart, with its components laid out on a workbench">
         <figcaption><b>Figure 1.</b> The Kindle's components. Clockwise from top left: battery and battery cover, screws, main board, display module, ITO film, back case, frame.</figcaption>
@@ -30,10 +30,18 @@
         <div class="stat"><div class="v">22.3%</div><div class="l">of it documented as properly collected and recycled [4]</div></div>
         <div class="stat"><div class="v">82 Mt</div><div class="l">Projected annual e-waste by 2030 [4]</div></div>
       </div>
-      <p>A single Kindle is a tiny fraction of that, but there are many millions of them in drawers and landfills. Our two parts show both sides of the recycling story.</p>
-      <p><strong>The battery cover is the good news.</strong> Stainless steel is valuable, easy to identify and widely recycled, and this cover comes out with a screwdriver. The bigger risk in the same compartment is the lithium-ion battery. A damaged or swollen cell is exactly the failure we modelled on the <a href="battery.html#use-phase">Battery Cover page</a>, and crushed batteries are a known cause of fires in waste and recycling facilities [9].</p>
-      <p><strong>The screen is the harder case.</strong> The indium in the ITO film is spread in a layer so thin our XRF couldn't find it. Indium is on the U.S. critical minerals list [5]. It is mined almost entirely as a by-product of zinc refining, and most of the world's refined supply comes from China [5]. A thin film bonded to plastic is about the hardest form to recover a metal from, so most of the indium in a discarded e-reader is simply lost.</p>
-      <p class="takeaway">The Kindle's most recyclable part is a plain sheet of steel. Its scarcest material is spread nanometres thin across the screen, which is the part that makes it a Kindle at all.</p>
+      <p>The Kindle provides a small-scale example of a broader e-waste problem: material value does not necessarily translate into practical recovery. The two components examined in this project illustrate different end-of-life constraints, from separating a recyclable metal cover to recovering a thin conductive coating from a layered display.</p>
+      <h3>Material composition and recovery</h3>
+      <p>The stainless-steel battery cover offers a relatively straightforward recovery pathway once separated from the materials bonded to it. Stainless steel is valuable, identifiable, and widely recycled. The adjacent lithium-ion battery introduces a separate handling constraint. Battery swelling is the failure mechanism modelled on the <a href="battery.html#use-phase">Battery Cover page</a>, while damage during waste processing can create a fire hazard. The U.S. EPA documents lithium-ion battery fires in waste and recycling facilities [9].</p>
+      <p>The display presents a more complex separation problem. Our XRF analysis did not detect indium in the ITO film, consistent with the measurement limitations discussed on the <a href="screen.html">E-ink Screen page</a>. Indium is listed as a U.S. critical mineral and is produced primarily as a by-product of zinc refining [5]. Its distribution in a thin coating within a layered component makes recovery a different engineering problem from recycling a discrete metal sheet. Our testing identified this separation challenge but did not measure an indium recovery rate.</p>
+      <h3>Adhesive bonding and repairability</h3>
+      <p>During disassembly, we repeatedly found adhesive or double-sided tape in addition to mechanical fasteners. Removing the screws did not release the components; the remaining adhesive bonds still resisted separation. This observation raised a design question: what additional function did the adhesive provide where screws already appeared to secure the assembly?</p>
+      <p>The screen demonstrated the clearest consequence of this construction. We could not remove it intact and instead had to fracture it progressively, removing it piece by piece. The removal process therefore eliminated the possibility of reusing our display as a complete component. A comparable procedure appears in iFixit's <i>Kindle 4 Screen Replacement</i> guide, which describes full-surface bonding between the screen and bezel, removal of the screen in fragments, and subsequent clearing of residual adhesive and glass. The guide also identifies double-sided tape attaching the back cover [<a href="#source-10">10</a>]. Although it concerns a different Kindle model, it documents a similar constraint on disassembly.</p>
+      <p>Our testing did not establish whether the additional adhesive was necessary for the device's mechanical performance. It did establish a practical limitation: the screw connections were reversible, while separation of the bonded screen caused irreversible damage. The distinction matters because access to a component does not, by itself, make that component recoverable for reuse.</p>
+      <p>After separation, all of the adhesive residue we encountered was readily removed by light wiping with ethanol. Residue removal was therefore straightforward, even though separating the bonded components had been difficult. This suggests that solvent-assisted disassembly warrants further investigation, but our cleanup observation does not establish whether ethanol could have reached the bonded interfaces and released the screen before it fractured.</p>
+      <h3>End-of-life implications</h3>
+      <p>The iFixit guide demonstrates that a damaged screen can be replaced and the Kindle reassembled [<a href="#source-10">10</a>]. However, replacement and component reuse impose different requirements. A replacement procedure may tolerate destruction of an already damaged display; recovering a display for reuse requires preserving it during removal. In our teardown, adhesive bonding prevented that outcome and added a separation step after the fasteners had been removed.</p>
+      <p class="takeaway">The Kindle's end-of-life performance depends on both material selection and assembly design. Recyclable metals and potentially reusable components offer limited recovery benefits when adhesive bonds make their separation difficult or destructive.</p>
     </section>
 
     <section id="sources">
@@ -48,6 +56,7 @@
         <li value="7">Flexure formula, Engineering Core Courses. <a href="http://www.engineeringcorecourses.com/solidmechanics1/C4-bending/C4.2-flexure-formula/theory/">engineeringcorecourses.com</a></li>
         <li value="8">Indium tin oxide, Wikipedia. <a href="https://en.wikipedia.org/wiki/Indium_tin_oxide">en.wikipedia.org/wiki/Indium_tin_oxide</a></li>
         <li value="9">U.S. EPA (2021). <i>An Analysis of Lithium-ion Battery Fires in Waste Management and Recycling</i>. <a href="https://www.epa.gov/recycle/used-lithium-ion-batteries">epa.gov</a></li>
+        <li id="source-10" value="10">Santens, Francis, and contributors. <i>Kindle 4 Screen Replacement</i>. iFixit. Steps 1 and 5–6 describe the back-cover tape, full-surface screen adhesive, and removal of the screen in pieces; steps 7–8 cover replacement and reassembly. <a href="https://www.ifixit.com/Guide/Kindle+4++Screen++Replacement/72783">ifixit.com</a></li>
       </ol>
     </section>
     <nav class="page-end" aria-label="More sections">
