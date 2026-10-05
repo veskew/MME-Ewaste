@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Battery Cover · Kindle Deconstructed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Sections">
+    <a class="back" href="project.html">← All sections</a>
+    <a class="tab" href="screen.html">E-ink Screen</a>
+    <a class="tab" href="battery.html" aria-current="page">Battery Cover</a>
+    <a class="tab" href="impact.html">Environmental Impact &amp; Conclusions</a>
+  </nav>
+
+  <main>
+    <section id="battery-cover">
+      <p class="kicker">The battery cover</p>
+      <h2>A quarter-millimetre of stainless steel</h2>
+      <p>Behind the screen, a thin metal plate holds the lithium-ion battery in place. It has two jobs: shield the battery from impacts, and keep a swelling battery from pushing into the rest of the device or into the user's hand.</p>
+      <div class="pair-wrap"><div class="pair">
+        <figure>
+          <img src="Pictures/battery/cover-front.jpg" alt="Bare metal side of the battery cover with adhesive residue in the centre and screw tabs on two corners" loading="lazy">
+        </figure>
+        <figure>
+          <img src="Pictures/battery/cover-back.jpg" alt="Back of the battery cover with a black rubber-like pad bonded across most of its face" loading="lazy">
+        </figure>
+      </div>
+      <figcaption><b>Figure 1.</b> Front and back of the stainless-steel battery cover. The back carries a thin, soft black pad bonded on with adhesive.</figcaption></div>
+      <div class="stats four">
+        <div class="stat"><div class="v">70 × 60 mm</div><div class="l">Footprint (70.26 × 60.10 mm)</div></div>
+        <div class="stat"><div class="v">0.25 mm</div><div class="l">Sheet thickness</div></div>
+        <div class="stat"><div class="v">2.44 mm</div><div class="l">Height of the bent edge walls</div></div>
+        <div class="stat"><div class="v">2 screws</div><div class="l">Through tabs on opposite corners (2.16 mm holes)</div></div>
+      </div>
+
+      <h3>Identifying the alloy</h3>
+      <p>We clipped a tab off the cover and scanned it with XRF. It is mostly iron, with large amounts of chromium and nickel and a little manganese, which is the signature of an austenitic stainless steel. Comparing our numbers with the alloy data in Ansys Granta EduPack, the closest match is <strong>301 stainless steel</strong>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Element</th><th class="num">Measured (wt.%)</th><th class="num">301 SS spec (wt.%)</th></tr></thead>
+          <tbody>
+            <tr><td>Fe (iron)</td><td class="num">74.4</td><td class="num">70.8–78 (balance)</td></tr>
+            <tr><td>Cr (chromium)</td><td class="num">16.8</td><td class="num">16–18</td></tr>
+            <tr><td>Ni (nickel)</td><td class="num">6.2</td><td class="num">6–8</td></tr>
+            <tr><td>Mn (manganese)</td><td class="num">1.7</td><td class="num">0–2</td></tr>
+            <tr><td>C (carbon)</td><td class="num">not detectable by XRF</td><td class="num">0–0.15</td></tr>
+          </tbody>
+          <caption><b>Table 1.</b> XRF composition of the battery cover compared with the composition range for 301 stainless steel (Ansys Granta EduPack). Every measured element falls within the spec.</caption>
+        </table>
+      </div>
+      <p>The chromium is what makes it <em>stainless</em>. It forms a thin, self-healing chromium oxide film on the surface, which gives 301 excellent resistance to water and humidity and moderate resistance to acids and alkalis. That matters for a part sitting on a battery inside a device people carry everywhere.</p>
+
+      <h3>Mechanical properties</h3>
+      <div class="pair-wrap"><div class="pair" style="align-items:center">
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Property</th><th class="num">Value</th></tr></thead>
+            <tbody>
+              <tr><td>Hardness (measured)</td><td class="num">308 HV</td></tr>
+              <tr><td>Young's modulus</td><td class="num">189 GPa</td></tr>
+              <tr><td>Yield strength</td><td class="num">758 MPa</td></tr>
+              <tr><td>Flexural strength</td><td class="num">696 MPa</td></tr>
+              <tr><td>Elongation at fracture</td><td class="num">16.5%</td></tr>
+            </tbody>
+            <caption><b>Table 2.</b> We measured hardness with a micro-hardness test. The other values are mid-range figures for 301 SS from Granta EduPack.</caption>
+          </table>
+        </div>
+        <figure style="margin:0">
+          <img src="Pictures/battery/hardness-indent.jpg" alt="Microscope view through the eyepiece of a diamond-shaped Vickers indent between two measurement lines" loading="lazy">
+          <figcaption><b>Figure 2.</b> Our Vickers indent in the cover: 500&nbsp;gf load, with the measurement lines 51.6&nbsp;µm apart.</figcaption>
+        </figure>
+      </div></div>
+      <p>A hardness of 308&nbsp;HV is high for an austenitic stainless steel. That suggests the sheet was <em>cold-worked</em> (rolled or formed at room temperature), which 301 is designed for. As Figure 3 shows, 301 has a large strain-hardening region: every bit of plastic deformation makes it stronger. That lets manufacturers roll very thin sheet that is still stiff and strong.</p>
+      <figure class="framed narrow">
+        <img src="Pictures/battery/stress-strain-301.png" alt="Schematic stress-strain curve rising from a yield strength of 758.4 MPa through a long strain-hardening region to an ultimate strength of 1023.9 MPa, then fracturing at 16.5% strain" loading="lazy">
+        <figcaption><b>Figure 3.</b> Schematic tensile stress–strain curve for 301 stainless steel: Young's modulus 189&nbsp;GPa, yield 758&nbsp;MPa, ultimate strength about 1024&nbsp;MPa, fracture at 16.5% strain. The elastic region is exaggerated so it's visible. Yielding is a smooth transition rather than a sharp drop.</figcaption>
+      </figure>
+    </section>
+
+    <hr class="chapter">
+
+    <section id="use-phase">
+      <p class="kicker">Use phase</p>
+      <h2>What happens when the battery swells?</h2>
+      <p>In normal use the battery barely pushes on its cover. The worst case is an ageing or damaged lithium-ion cell that <em>swells</em> as gas builds up inside, pressing outward on the middle of the cover while the screws and edges hold it in place.</p>
+      <figure>
+        <img src="Pictures/battery/loading-diagram.png" alt="Left: top view of the battery cover with section line A-A. Right: cross-section showing a swollen battery pushing the cover upward between its edge restraints" loading="lazy">
+        <figcaption><b>Figure 4.</b> Our loading model. (a) Top view of the cover. (b) Cross-section A–A: a swollen battery pushes the cover outward between its edge restraints (deflection exaggerated).</figcaption>
+      </figure>
+      <p>How hard does a swelling battery push? One study measured the force from swelling lithium-ion cells and found the force rising by roughly 50&nbsp;N or more above its starting preload, whether that preload was 50&nbsp;N or 250&nbsp;N (Figure 5). We used <strong>50&nbsp;N</strong> as a reasonable estimate of what our cover has to resist.</p>
+      <figure class="framed">
+        <img src="Pictures/battery/swelling-force.png" alt="Two plots of force against time for swelling lithium-ion cells under 50 N and 250 N preloads, with force rising steadily over time" loading="lazy">
+        <figcaption><b>Figure 5.</b> Force over time from swelling lithium-ion cells at two preloads [2].</figcaption>
+      </figure>
+
+      <h3>Testing it: three-point bending</h3>
+      <p>We modelled this load as <strong>flexure</strong>. The cover is supported near its two ends and pushed at the centre, so its outer face stretches (tension) while its inner face squeezes (compression). We reproduced this on an Instron universal testing machine as a three-point bend test.</p>
+      <div class="pair-wrap"><div class="pair">
+        <figure>
+          <img src="Pictures/battery/instron-setup.jpg" alt="Instron testing machine with a 500 N load cell and a three-point bending fixture" loading="lazy">
+          <figcaption><b>Figure 6.</b> Three-point flexure setup on the Instron.</figcaption>
+        </figure>
+        <figure class="framed">
+          <img src="Pictures/battery/bending-stress.png" alt="Diagram of a bent beam with tension on the outer face, compression on the inner face, and a linear stress distribution through the thickness that is zero at the neutral surface" loading="lazy">
+          <figcaption><b>Figure 7.</b> In bending, stress varies linearly through the thickness. It is largest at the surfaces and zero at the neutral axis.</figcaption>
+        </figure>
+      </div></div>
+      <figure class="framed narrow">
+        <img src="Pictures/battery/load-extension.png" alt="Load against extension from the Instron test; load reaches about 185 N near 9 mm of extension and then falls off to about 75 N at 18 mm" loading="lazy">
+        <figcaption><b>Figure 8.</b> Instron load–extension data for the battery cover. Values are negative because the crosshead moves downward. The cover reached 50&nbsp;N after about 2.6&nbsp;mm, peaked near 185&nbsp;N at about 9&nbsp;mm, and then gave way.</figcaption>
+      </figure>
+
+      <div class="calc">
+        <h4>Maximum bending stress at 50 N (flat-sheet model)</h4>
+        <div class="eq"><var>M</var> = <var>WL</var>/4 = (50 N)(0.070 m)/4 = <b>0.875 N·m</b></div>
+        <div class="eq"><var>I</var> = <var>wh</var><sup>3</sup>/12 = (0.060 m)(0.00025 m)<sup>3</sup>/12 = <b>7.81 × 10<sup>−14</sup> m<sup>4</sup></b></div>
+        <div class="eq"><var>c</var> = <var>h</var>/2 = <b>1.25 × 10<sup>−4</sup> m</b></div>
+        <div class="eq">σ<sub>max</sub> = <var>Mc</var>/<var>I</var> = (0.875)(1.25 × 10<sup>−4</sup>)/(7.81 × 10<sup>−14</sup>) ≈ <b>1.4 × 10<sup>9</sup> Pa</b></div>
+        <p class="result">σ<sub>max</sub> ≈ 1.4 GPa, nearly twice the 758 MPa yield strength.</p>
+      </div>
+      <p>If the cover were a <em>flat</em> 0.25&nbsp;mm sheet, a swelling battery would bend it permanently. By the same equation, a flat sheet would start to yield at only about 27&nbsp;N.</p>
+      <p>Our real cover held about <strong>185&nbsp;N</strong> in the Instron before it gave way, roughly seven times more. The difference is the <strong>2.44&nbsp;mm bent walls</strong> around its edges. Like the flanges on an I-beam, they move material away from the neutral axis, which raises the moment of inertia far more than adding thickness would. The designers got a stiff, protective cover out of very little steel by bending its edges up.</p>
+    </section>
+
+    <hr class="chapter">
+
+    <section id="end-of-life">
+      <p class="kicker">End of life</p>
+      <h2>How hard is it to take back apart?</h2>
+      <p>Before the cover can be recycled as clean stainless steel, everything stuck to it has to come off. Here is how our teardown went:</p>
+      <ol class="steps">
+        <li>Pry off the Kindle's outer plastic case.</li>
+        <li>Remove the two screws holding the battery cover to the chassis.</li>
+        <li>Separate the lithium-ion battery from the cover, which it is bonded to with adhesive.</li>
+        <li>Peel the black foam pad off the cover. Underneath is a thin plastic film, which also peels off by hand.</li>
+        <li>Wipe off the leftover adhesive with ethanol.</li>
+      </ol>
+      <div class="pair-wrap"><div class="pair" style="align-items:center">
+        <figure class="framed">
+          <img src="Pictures/battery/peel-diagram.png" alt="Sketch of a hand peeling the black foam layer back from the silver stainless-steel cover" loading="lazy">
+          <figcaption><b>Figure 9.</b> Peeling the foam (black) from the stainless-steel cover (silver). The loading is a mix of tension and twisting.</figcaption>
+        </figure>
+        <figure>
+          <img src="Pictures/battery/cover-peeled.jpg" alt="The black foam pad, the clear plastic film and the bare steel cover laid out separately" loading="lazy">
+          <figcaption><b>Figure 10.</b> Separated: foam pad, plastic film and bare steel cover.</figcaption>
+        </figure>
+      </div></div>
+      <p>Peeling foam tape takes up to about <strong>35&nbsp;N</strong> [3], easily done by hand. The real stress state is complicated, with tension in the adhesive and some twisting. To estimate the stress in the steel, we assumed the peel force pulls along the face of the cover, which loads its cross-section in simple tension:</p>
+      <div class="calc">
+        <h4>Stress in the cover during peeling</h4>
+        <div class="eq"><var>A</var> = <var>w</var> × <var>t</var> = 60.10 mm × 0.25 mm = <b>15.0 mm²</b></div>
+        <div class="eq">σ = <var>F</var>/<var>A</var> = 35 N / 15.0 mm² ≈ <b>2.3 MPa</b></div>
+        <div class="eq">ε = σ/<var>E</var> = 2.3 MPa / 189 GPa ≈ <b>1.2 × 10<sup>−5</sup></b> (about 0.001%)</div>
+        <p class="result">About 0.3% of the yield strength: purely elastic, and the steel springs back unharmed.</p>
+      </div>
+      <p>Taking the cover apart barely loads the steel at all. And since the steel is going to be melted down, a little bending wouldn't matter anyway.</p>
+
+      <div class="note">
+        <strong>Our verdict on this part</strong>
+        <p>The battery cover is <em>easy to recycle</em>: two screws and a peel. It would be even easier without the adhesive. The bent walls and screws already hold the battery in place, so the glue mostly adds a cleaning step (and a solvent) between the device and a clean stream of stainless steel.</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <p class="kicker">Sources</p>
+      <ol class="sources">
+        <li value="2">Force evolution of swelling lithium-ion batteries, <i>ScienceDirect</i>. <a href="https://www.sciencedirect.com/science/article/pii/S2773153725001343">sciencedirect.com/science/article/pii/S2773153725001343</a></li>
+        <li value="3">Peel force of adhesive foam tape, Force Channel. <a href="https://force-channel.com/en/post_2696/">force-channel.com</a></li>
+        <li value="6">Ansys Granta EduPack, record for AISI 301 stainless steel (composition and mechanical properties).</li>
+        <li value="7">Flexure formula, Engineering Core Courses. <a href="http://www.engineeringcorecourses.com/solidmechanics1/C4-bending/C4.2-flexure-formula/theory/">engineeringcorecourses.com</a></li>
+      </ol>
+    </section>
+    <nav class="page-end" aria-label="More sections">
+      <a href="screen.html"><small>Previous</small>← E-ink Screen</a>
+      <a class="next" href="impact.html"><small>Next</small>Environmental Impact &amp; Conclusions →</a>
+    </nav>
+  </main>
+
+  <footer>
+    <p>David Barsoum · Anna Brown · Dakota Chang · Vishnu Eskew<br>Metals, Mining &amp; the Environment · Olin College · Fall 2026</p>
+    <p><a href="index.html">← Back to the Kindle</a></p>
+  </footer>
+</body>
+</html>
