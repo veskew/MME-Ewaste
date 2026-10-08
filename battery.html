@@ -119,7 +119,7 @@
     <section id="use-phase">
       <p class="kicker">Use phase</p>
       <h2>What happens when the battery swells?</h2>
-      <p>As a lithium-ion battery ages, it can swell and push outward on whatever surrounds it [<a href="#source-2">2</a>]. We tested how the cover responds to that kind of load in two ways: a physical three-point bend test, and a finite element analysis (FEA) simulation of the cover as it sits in the Kindle.</p>
+      <p>As a lithium-ion battery ages, it can swell and push outward on whatever surrounds it, with swelling pressures reaching about 0.5 MPa [<a href="#source-2">2</a>]. We tested how the cover responds to that kind of load in two ways: a physical three-point bend test, and a finite element analysis (FEA) simulation of the cover as it sits in the Kindle.</p>
       <h3>Testing it: three-point bending</h3>
       <p>We modelled this load as <strong>flexure</strong> [<a href="#source-6">6</a>]. The cover is supported near its two ends and pushed at the centre, so its outer face stretches (tension) while its inner face squeezes (compression). We reproduced this on an Instron universal testing machine as a three-point bend test.</p>
       <div class="pair-wrap"><div class="pair">
@@ -137,7 +137,7 @@
       </figure>
 
       <h3>Finite Element Analysis Simulation</h3>
-      <p>We first validate the FEA realism by simulating the three-point bending test. We applied a 200 N load and constraints similar to the three-point test, and the simulation gave a displacement of 5.2 mm, compared with about 8 mm measured at a similar force. This validates that our FEA setup is accurate enough.</p>
+      <p>We first validate the FEA realism by simulating the three-point bending test. We applied a 192 N load and constraints similar to the three-point test, and the simulation gave a maximum displacement of 7.03 mm. That is only about 17.3% off the 8.5 mm measured at the same force in the real test, which validates our FEA setup.</p>
       <figure class="narrow">
         <img src="Pictures/battery/fea-three-point.png" alt="FEA displacement plot of the battery cover in three-point bending, with the largest displacement (red) at the centre and the least (blue) at the supported ends" loading="lazy">
         <figcaption><b>Figure 10.</b> FEA displacement plot of the simulated three-point bend test.</figcaption>
@@ -145,10 +145,11 @@
       <p>We simulate the battery swelling with FEA because the three-point bend test is a simplification. In the Kindle, the cover isn't resting on two rollers and pushed by a single nose. It is bolted down by two screws through tabs on opposite corners, and a swelling battery presses on it across a broad area rather than at one line. A simple beam model would also treat the cover as a flat strip, ignoring the bent walls, tabs and holes that make it so much stiffer in practice.</p>
       <p>The FEA uses full cover geometry and holds it the way the device actually does, so the simulation can show where stress concentrates and whether a swelling battery would ever push the steel past yield. In the simulation, we assume the foam is negligible.</p>
       <figure class="narrow">
-        <img src="Pictures/battery/fea-swelling.png" alt="FEA displacement plot of the full battery cover held at its two corner screw tabs under a uniform swelling pressure, with displacement greatest (red) toward the far corner" loading="lazy">
-        <figcaption><b>Figure 11.</b> Displacement of the cover under a simulated swelling pressure of 151 kPa, applied over a circular area about 39 mm across so that the total force is about 184 N.</figcaption>
+        <img src="Pictures/battery/fea-swelling.png" alt="FEA displacement plot of the full battery cover held at its two corner screw tabs under a 0.5 MPa swelling pressure, with displacement greatest (red, up to 2.76 mm) along the middle of the long edge and least (blue) at the screw tabs" loading="lazy">
+        <img src="Pictures/battery/fea-swelling-side.png" alt="Side view of the same FEA result, showing the cover bowed outward in the middle and pinned flat at the screw tabs on each end" loading="lazy">
+        <figcaption><b>Figure 11.</b> Displacement of the cover under a simulated swelling pressure of 0.5 MPa applied over an elliptical area, in an angled view (top) and a side view (bottom). The maximum displacement is 2.76 mm.</figcaption>
       </figure>
-      <p>To represent the swelling battery, we applied a uniform pressure of 151 kPa over a circular area (about 39 mm in diameter, or 1,220 mm²) on the cover, which adds up to a total force of about 184 N. The FEA shows a maximum displacement of about 1.1 mm. Our assumption that the foam is negligible should be revisited because the foam itself can be displaced about 1mm, which is too close to the simulated displacement of 1.1mm. Common wisdom would assume that if the foam is softer than 301 stainless steel, only the foam would deform and the steel would be left untouched.</p>
+      <p>To represent the swelling battery, we applied a uniform pressure of 0.5 MPa over an elliptical area of the cover. The FEA shows a maximum displacement of 2.76 mm. Assuming the other side of the battery doesn't yield at all, the maximum von Mises stress is about 5.4 GPa, roughly seven times the 758 MPa yield strength, so under the full 0.5 MPa the cover would yield and permanently bulge. Because the simulation is linear-elastic, the real displacement would be larger than 2.76 mm. This is a worst case. The 0.5 MPa figure is for a battery that's fully held in place, the pressure drops as the cover gives way, and the 1 mm foam pad absorbs some of the swelling first. In practice the cover likely bulges slightly rather than failing, and the extra space in the Kindle's case means a user may not notice.</p>
     </section>
 
     <hr class="chapter">
@@ -192,7 +193,7 @@
     <section id="sources">
       <p class="kicker">Sources</p>
       <ol class="sources">
-        <li id="source-2" value="2">Force evolution of swelling lithium-ion batteries, <i>ScienceDirect</i>. <a href="https://www.sciencedirect.com/science/article/pii/S2773153725001343">sciencedirect.com/science/article/pii/S2773153725001343</a></li>
+        <li id="source-2" value="2">Lithium-ion battery swelling pressure, Princeton University Spike Lab, paper 103. <a href="https://spikelab.mycpanel.princeton.edu/papers/103.pdf">spikelab.mycpanel.princeton.edu/papers/103.pdf</a></li>
         <li id="source-3" value="3">Peel force of adhesive foam tape, Force Channel. <a href="https://force-channel.com/en/post_2696/">force-channel.com</a></li>
         <li id="source-5" value="5">Ansys Granta EduPack, record for AISI 301 stainless steel (composition and mechanical properties).</li>
         <li id="source-6" value="6">Flexure formula, Engineering Core Courses. <a href="http://www.engineeringcorecourses.com/solidmechanics1/C4-bending/C4.2-flexure-formula/theory/">engineeringcorecourses.com</a></li>
