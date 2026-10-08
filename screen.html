@@ -20,8 +20,8 @@
   <main>
     <section id="kindle-101">
       <p class="kicker">Kindle 101</p>
-      <h2>Ink you can switch on and off</h2>
-      <p>A Kindle's screen doesn't glow like a phone's. It uses an <em>electrophoretic</em> (e-ink) display. Millions of microcapsules sit between two electrodes, and each capsule holds positively and negatively charged black and white pigment particles in a clear fluid. When a voltage is applied across a capsule, one colour of particle is pulled toward the top of the capsule, so that spot shows black or white.</p>
+      <h2>A screen that never dies</h2>
+      <p>A Kindle's screen doesn't glow like other popular devices. It uses an <em>electrophoretic</em> (e-ink) display. Millions of microcapsules sit between two electrodes, and each capsule holds positively and negatively charged black and white pigment particles in a clear fluid. When a voltage is applied across a capsule, one colour of particle is pulled toward the top of the capsule, so that spot shows black or white.</p>
       <p>Power is only needed to <em>switch</em> a capsule. Once the particles have moved they stay put with no power at all, which is why a page of text costs almost nothing to display and a Kindle battery lasts for weeks.</p>
       <div class="pair-wrap"><div class="pair">
         <figure class="framed">
@@ -63,52 +63,27 @@
           <caption><b>Table 1.</b> XRF results from two scans of the ITO-coated film, normalised to 100%. Oxygen can't be detected by XRF, and indium did not appear in either scan.</caption>
         </table>
       </div>
-      <p>No indium appeared. The two scans also disagree with each other, and they look much more like the material <em>underneath</em> the coating than the coating itself. The XRF signal goes far deeper than a coating only nanometres thick, so it mostly measures the substrate. The "scandium" is almost certainly calcium, a known mix-up in our XRF software because the two elements' X-ray peaks overlap. As a check, we scanned a piece of confirmed ITO glass from the materials science lab, and it didn't show indium either. Our conclusion is that this instrument can't detect a coating this thin. It doesn't mean the indium is missing.</p>
+      <p>No indium appeared. The two scans are completely different, and they seem like the material underneath the coating, not the coating itself. The XRF signal goes far deeper than a coating only a few nanometres thick. The "scandium" is almost certainly calcium, a false reading due to the two elements' X-ray peaks overlapping. As a check, we scanned a piece of confirmed ITO coated glass from the materials science lab, and it didn't show indium either. Our conclusion is that the XRF can't detect a coating this thin, but it doesn't mean the indium is missing.</p>
 
-      <h3>Is it conductive? (four-point probe)</h3>
-      <p>To check that the coating conducts, we placed the film on a four-point probe connected to a power supply. Current flowed through the film, which confirms there is a conductive layer on the plastic even though we can't see it.</p>
+      <h3>Is it conductive? (two-point probe)</h3>
+      <p>To check that the coating conducts, we placed the film on a two-point probe connected to a power supply. Current flowed through the film, which confirms there is a conductive layer on the plastic even though we can't see it.</p>
       <figure>
-        <img src="Pictures/screen/four-point-probe.jpg" alt="Four probe needles resting on the clear film, connected to a power supply by red leads" loading="lazy">
-        <figcaption><b>Figure 4.</b> Testing the conductivity of the top film with the four-point probe.</figcaption>
+        <img src="Pictures/screen/four-point-probe.jpg" alt="Two probe needles resting on the clear film, connected to a power supply by red leads" loading="lazy">
+        <figcaption><b>Figure 4.</b> Testing the conductivity of the top film with the two-point probe.</figcaption>
       </figure>
 
       <h3>Structure and bonding: why ITO?</h3>
-      <p>ITO is a <strong>ceramic</strong>, not a metal. Its base is indium oxide (In<sub>2</sub>O<sub>3</sub>), an ionic–covalent compound with a cubic crystal structure called <em>bixbyite</em>. Its usefulness comes from two properties that normally don't go together:</p>
+      <p>ITO’s base is indium oxide (In<sub>2</sub>O<sub>3</sub>), an ionic–covalent compound with a cubic crystal structure. Its usefulness comes from two properties that normally don't go together:</p>
       <ul>
-        <li><strong>Transparency.</strong> In<sub>2</sub>O<sub>3</sub> has a wide optical band gap of about 3.5&nbsp;eV. That is the minimum photon energy needed to push an electron across the gap and absorb the light. Visible-light photons carry only about 1.6–3.1&nbsp;eV, so they pass straight through.</li>
-        <li><strong>Conductivity.</strong> In ITO, some In<sup>3+</sup> ions in the crystal are replaced by Sn<sup>4+</sup> ions. Each tin ion brings one extra electron that the lattice doesn't need for bonding, and that free electron can carry current. The indium-to-tin ratio is tuned to give enough free electrons to conduct without making the film cloudy.</li>
+        <li><strong>Transparency.</strong> In<sub>2</sub>O<sub>3</sub> has a wide optical band gap of about 3.5&nbsp;eV. That is the minimum photon energy needed to push an electron across the gap and absorb the light. Visible-light photons carry only about 1.6–3.1&nbsp;eV, so they pass straight through [<a href="#source-25">25</a>].</li>
+        <li><strong>Conductivity.</strong> In ITO, some In<sup>3+</sup> ions in the crystal are replaced by Sn<sup>4+</sup> ions, in a process called tin doping. Each tin ion brings one extra electron that the lattice doesn't need for bonding, and that free electron can carry current. The indium-to-tin ratio is tuned to give enough free electrons to conduct without making the film cloudy [<a href="#source-26">26</a>].</li>
       </ul>
 
-      <div class="pair-wrap"><div class="pair" style="align-items:center">
-        <figure>
-          <svg viewBox="0 0 300 280" role="img" aria-labelledby="uc-title">
-            <title id="uc-title">Body-centred tetragonal unit cell of indium: atoms on the eight corners and one in the centre, with the vertical c axis about 1.5 times longer than a</title>
-            <g fill="none" stroke="#1b1b1a" stroke-width="1.5">
-              <path d="M110 200 L210 200 M110 200 L60 230 M110 200 L110 48" stroke-dasharray="4 4" stroke="#8a857b"/>
-              <path d="M60 230 L160 230 L210 200 L210 48 L110 48 L60 78 Z M60 78 L160 78 L210 48 M160 78 L160 230"/>
-            </g>
-            <g fill="#8a857b" stroke="#1b1b1a" stroke-width="1">
-              <circle cx="110" cy="200" r="12"/><circle cx="210" cy="200" r="12"/><circle cx="110" cy="48" r="12"/><circle cx="210" cy="48" r="12"/>
-            </g>
-            <circle cx="135" cy="139" r="13" fill="#1f5f6b" stroke="#1b1b1a"/>
-            <g fill="#c9c4b8" stroke="#1b1b1a" stroke-width="1">
-              <circle cx="60" cy="230" r="12"/><circle cx="160" cy="230" r="12"/><circle cx="60" cy="78" r="12"/><circle cx="160" cy="78" r="12"/>
-            </g>
-            <g font-family="Inter, sans-serif" font-size="13" fill="#55524c">
-              <text x="104" y="262">a = 3.25 Å</text>
-              <text x="222" y="128">c = 4.95 Å</text>
-            </g>
-          </svg>
-          <figcaption><b>Figure 5.</b> Indium metal's body-centred tetragonal unit cell: one atom at each corner and one in the centre (teal). The cell is stretched along <i>c</i>, with <i>c/a</i> ≈ 1.52.</figcaption>
-        </figure>
-        <div>
-          <p>The element indium has its own story. As a pure metal it forms a <em>body-centred tetragonal</em> crystal held together by fairly weak metallic bonds, with a cohesive energy of about 2.52&nbsp;eV/atom compared with 3.49&nbsp;eV/atom for copper. Weak bonds explain why indium is so soft and melts so easily.</p>
-          <div class="stats" style="grid-template-columns:1fr 1fr">
-            <div class="stat"><div class="v">156.6 °C</div><div class="l">Melting point of indium</div></div>
-            <div class="stat"><div class="v">~11 GPa</div><div class="l">Young's modulus (copper ≈ 120 GPa)</div></div>
-          </div>
-        </div>
-      </div></div>
+      <p>The element indium has its own story. As a pure metal it forms a <em>body-centred tetragonal</em> crystal held together by fairly weak metallic bonds, with a cohesive energy of about 2.52&nbsp;eV/atom compared with 3.49&nbsp;eV/atom for copper [<a href="#source-27">27</a>]. Weak bonds explain why indium is so soft and melts so easily.</p>
+      <div class="stats" style="grid-template-columns:1fr 1fr">
+        <div class="stat"><div class="v">156.6 °C</div><div class="l">Melting point of indium</div></div>
+        <div class="stat"><div class="v">~11 GPa</div><div class="l">Young's modulus (copper ≈ 120 GPa) [<a href="#source-28">28</a>]</div></div>
+      </div>
       <p>Once indium is locked into the oxide ceramic, those metallic properties disappear. It is the oxide's wide band gap and tin's extra electrons that make the screen work.</p>
     </section>
 
@@ -117,6 +92,10 @@
       <ol class="sources">
         <li value="1">Cross-sectional diagram of e-ink microcapsules, ResearchGate. <a href="https://www.researchgate.net/figure/left-A-cross-sectional-diagram-of-E-ink-microcapsules-An-E-ink-displays-works-by_fig1_360331596">researchgate.net</a></li>
         <li value="8">Indium tin oxide, Wikipedia. <a href="https://en.wikipedia.org/wiki/Indium_tin_oxide">en.wikipedia.org/wiki/Indium_tin_oxide</a></li>
+        <li id="source-25" value="25">Walsh, A., Da Silva, J. L. F., &amp; Wei, S.-H. (2011). Multi-component transparent conducting oxides: Progress in materials modelling. <i>Journal of Physics: Condensed Matter, 23</i>, 334210. <a href="https://arxiv.org/abs/1101.5720">arXiv:1101.5720</a></li>
+        <li id="source-26" value="26">González, G. B., Mason, T. O., Quintana, J. P., Warschkow, O., Ellis, D. E., Hwang, J.-H., Hodges, J. P., &amp; Jorgensen, J. D. (2004). Defect structure studies of bulk and nano-indium-tin oxide. <i>Journal of Applied Physics, 96</i>(7), 3912. <a href="https://doi.org/10.1063/1.1783610">doi:10.1063/1.1783610</a></li>
+        <li id="source-27" value="27">KnowledgeDoor. <i>Cohesive Energy</i>. The Elements Handbook. <a href="https://www.knowledgedoor.com/2/elements_handbook/cohesive_energy.html">knowledgedoor.com</a></li>
+        <li id="source-28" value="28">Ansys Granta EduPack, record for indium (Young's modulus).</li>
       </ol>
     </section>
     <nav class="page-end" aria-label="More sections">
