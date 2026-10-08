@@ -4,13 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MM&amp;E E-waste Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    html, body { margin: 0; height: 100%; background: #f4f4f4; font-family: system-ui, sans-serif; }
+    html, body { margin: 0; height: 100%; background: #f4f1ea; font-family: "Inter", system-ui, sans-serif; }
     body { display: flex; flex-direction: column; }
-    header { text-align: center; padding: 32px 16px 0; color: #111; }
-    header h1 { margin: 0; font-size: clamp(32px, 6vw, 64px); font-weight: 700; letter-spacing: -0.01em; }
-    header p { margin: 8px 0 0; font-size: clamp(14px, 2vw, 20px); color: #555; }
+    header { text-align: center; padding: 32px 16px 0; color: #1b1b1a; }
+    header h1 { margin: 0; font-family: "Literata", Georgia, serif; font-size: clamp(32px, 6vw, 64px); font-weight: 700; letter-spacing: -0.01em; }
+    header p { margin: 8px 0 0; font-size: clamp(14px, 2vw, 20px); color: #55524c; }
     model-viewer { flex: 1; width: 100%; min-height: 0; }
 
     .actions { display: flex; justify-content: center; padding: 16px 16px 48px; }
@@ -31,8 +34,8 @@
       inset: 0;
       display: grid;
       place-items: center;
-      background: #111;
-      color: #f4f4f4;
+      background: #1b1b1a;
+      color: #f4f1ea;
       font-size: 18px;
       font-weight: 600;
       letter-spacing: 0.2em;
@@ -47,7 +50,7 @@
     .shatter:focus-visible .shard {
       transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
     }
-    .shatter:focus-visible { box-shadow: 0 0 0 3px #f4f4f4, 0 0 0 5px #111; border-radius: 6px; }
+    .shatter:focus-visible { box-shadow: 0 0 0 3px #f4f1ea, 0 0 0 5px #1f5f6b; border-radius: 6px; }
     .shatter:active .shard { transform: translate(calc(var(--dx) * 2), calc(var(--dy) * 2)) rotate(calc(var(--rot) * 2)); }
 
     @media (prefers-reduced-motion: reduce) {
